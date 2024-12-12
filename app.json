@@ -13,7 +13,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Потрібен доступ до вашої локації для показу карти"
+      }
     },
     "android": {
       "adaptiveIcon": {
