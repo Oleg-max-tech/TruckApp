@@ -4,33 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types";
-import { Service } from "../../types";
+import { services } from "../../service";
 
 type HelpScreenNavigationProp = StackNavigationProp<RootStackParamList, "SOS">;
 
 export default function HelpScreen() {
   const navigation = useNavigation<HelpScreenNavigationProp>();
-
-  const services: Service[] = [
-    {
-      id: 1,
-      name: "Виклик евакуатора",
-      action: "Замовити",
-      icon: "car-outline",
-    },
-    {
-      id: 2,
-      name: "Підвезення бензину",
-      action: "Викликати",
-      icon: "water-outline",
-    },
-    {
-      id: 3,
-      name: "Заміна покришки",
-      action: "Викликати",
-      icon: "construct-outline",
-    },
-  ];
 
   return (
     <View style={styles.container}>

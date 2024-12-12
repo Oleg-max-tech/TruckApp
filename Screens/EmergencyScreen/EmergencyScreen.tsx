@@ -1,49 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../types";
-
-type EmergencyScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "EmergencyScreen"
->;
+import { emergencyServices } from "../../service";
 
 export default function EmergencyScreen() {
-  const navigation = useNavigation<EmergencyScreenNavigationProp>();
-
-  const emergencyServices = [
-    {
-      id: 1,
-      name: "Пожежна охорона",
-      action: "Зателефонувати",
-      icon: "flame-outline" as const,
-      phoneNumber: "101",
-    },
-    {
-      id: 2,
-      name: "Поліція",
-      action: "Зателефонувати",
-      icon: "shield-checkmark-outline" as const,
-      phoneNumber: "102",
-    },
-    {
-      id: 3,
-      name: "Швидка допомога",
-      action: "Зателефонувати",
-      icon: "heart-outline" as const,
-      phoneNumber: "103",
-    },
-    {
-      id: 4,
-      name: "Аварійна служба газу",
-      action: "Зателефонувати",
-      icon: "flame-outline" as const,
-      phoneNumber: "104",
-    },
-  ];
-
   return (
     <View style={styles.container}>
       {emergencyServices.map((service) => (
