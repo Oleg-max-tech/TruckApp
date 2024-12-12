@@ -40,16 +40,12 @@ export default function TowingRequestScreen() {
       return;
     }
 
-    Alert.alert(
-      "Підтвердження",
-      "Ваш запит прийнято. Евакуатор під'їде найближчим часом.",
-      [
-        {
-          text: "OK",
-          onPress: () => navigation.navigate("MapScreen"),
-        },
-      ]
-    );
+    Alert.alert("Підтвердження", "Ваш запит прийнято. ", [
+      {
+        text: "OK",
+        onPress: () => navigation.navigate("MapScreen"),
+      },
+    ]);
   };
 
   return (

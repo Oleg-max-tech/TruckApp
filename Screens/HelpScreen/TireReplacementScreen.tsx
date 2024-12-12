@@ -20,6 +20,11 @@ export default function TireReplacementScreen({ navigation }: any) {
       return;
     }
 
+    if (parseInt(tireSize) > 19) {
+      Alert.alert("Помилка!", "Максимальна розмірність шин R18");
+      return;
+    }
+
     Alert.alert(
       "Підтвердження",
       `Ви вибрали ${tireSize} ${tireType} шини. Підтверджуєте?`,
@@ -47,6 +52,7 @@ export default function TireReplacementScreen({ navigation }: any) {
           style={styles.input}
           placeholder="Розмірність шин"
           keyboardType="numeric"
+          maxLength={2}
           value={tireSize}
           onChangeText={setTireSize}
         />

@@ -12,6 +12,14 @@ export default function FuelRequestScreen({ navigation }: any) {
       return;
     }
 
+    if (parseInt(liters) > 100) {
+      Alert.alert(
+        "Помилка",
+        " Кількість палива не може перевищувати 100тлітрівІ"
+      );
+      return;
+    }
+
     Alert.alert(
       "Підтвердження",
       `Ви вибрали ${liters} літрів ${fuelType} пального. Підтверджуєте?`,
@@ -42,6 +50,7 @@ export default function FuelRequestScreen({ navigation }: any) {
         <TextInput
           style={styles.input}
           placeholder="Кількість літрів"
+          maxLength={3}
           value={liters}
           onChangeText={setLiters}
           keyboardType="numeric"
