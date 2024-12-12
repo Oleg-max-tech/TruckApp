@@ -13,7 +13,7 @@ export default function TowingRequestScreen() {
   const [weight, setWeight] = useState<string>("");
   const [length, setLength] = useState<string>("");
   const [width, setWidth] = useState<string>("");
-  const navigation = useNavigation<TowingRequestScreenNavigationProp>(); // Типізуємо useNavigation
+  const navigation = useNavigation<TowingRequestScreenNavigationProp>();
 
   const handleConfirm = () => {
     if (!weight || !length || !width) {
@@ -26,7 +26,7 @@ export default function TowingRequestScreen() {
       [
         {
           text: "OK",
-          onPress: () => navigation.navigate("MapScreen"), // Перехід до екрану MapScreen
+          onPress: () => navigation.navigate("MapScreen"),
         },
       ]
     );

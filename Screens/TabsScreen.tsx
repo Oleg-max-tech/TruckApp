@@ -9,8 +9,8 @@ export default function TabsScreen() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "#ff4d4d", // Колір для активної вкладки
-        tabBarInactiveTintColor: "gray", // Колір для неактивних вкладок
+        tabBarActiveTintColor: "#ff4d4d",
+        tabBarInactiveTintColor: "gray",
       }}
     >
       <Tab.Screen

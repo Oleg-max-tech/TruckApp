@@ -47,8 +47,8 @@ export default function MapScreen() {
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: location.latitude, // Використовуємо реальні координати
-            longitude: location.longitude, // Використовуємо реальні координати
+            latitude: location.latitude,
+            longitude: location.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}

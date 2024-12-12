@@ -2,13 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
 
-type RootStackParamList = {
-  Sos: undefined;
-  Tabs: undefined;
-};
-
-type SosScreenNavigationProp = StackNavigationProp<RootStackParamList, "Sos">;
+type SosScreenNavigationProp = StackNavigationProp<RootStackParamList, "SOS">;
 
 export default function SosScreen() {
   const navigation = useNavigation<SosScreenNavigationProp>();

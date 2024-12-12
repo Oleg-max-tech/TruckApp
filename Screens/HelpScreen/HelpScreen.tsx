@@ -9,7 +9,7 @@ import { Service } from "../../types";
 type HelpScreenNavigationProp = StackNavigationProp<RootStackParamList, "SOS">;
 
 export default function HelpScreen() {
-  const navigation = useNavigation<HelpScreenNavigationProp>(); // Ініціалізація з типами навігації
+  const navigation = useNavigation<HelpScreenNavigationProp>();
 
   const services: Service[] = [
     {
@@ -47,7 +47,7 @@ export default function HelpScreen() {
             style={styles.button}
             onPress={() => {
               if (service.id === 1) {
-                navigation.navigate("TowingRequestScreen"); // Перехід до екрану для виклику евакуатора
+                navigation.navigate("TowingRequestScreen");
               }
               if (service.id === 2) {
                 navigation.navigate("FuelRequestScreen");

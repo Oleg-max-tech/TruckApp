@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // Оновлений імпорт
+import { Picker } from "@react-native-picker/picker";
 
 export default function FuelRequestScreen({ navigation }: any) {
   const [liters, setLiters] = useState<string>("");
@@ -26,7 +26,7 @@ export default function FuelRequestScreen({ navigation }: any) {
             console.log(
               `Кількість літрів: ${liters}, Тип пального: ${fuelType}. Машина з паливом під'їде найближчим часом. `
             );
-            navigation.navigate("MapScreen"); // Перехід на карту після підтвердження
+            navigation.navigate("MapScreen");
           },
         },
       ]
@@ -51,7 +51,7 @@ export default function FuelRequestScreen({ navigation }: any) {
       <Picker
         selectedValue={fuelType}
         style={styles.picker}
-        onValueChange={(itemValue: string) => setFuelType(itemValue)} // Визначення типу
+        onValueChange={(itemValue: string) => setFuelType(itemValue)}
       >
         <Picker.Item label="Бензин" value="Бензин" />
         <Picker.Item label="Дизель" value="Дизель" />
@@ -65,31 +65,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: "center", // Вирівнює елементи по вертикалі
-    alignItems: "center", // Вирівнює елементи по горизонталі
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 20,
-    textAlign: "center", // Вирівнює заголовок по центру
+    textAlign: "center",
   },
   inputContainer: {
-    flexDirection: "row", // Розташовує елементи по горизонталі
-    justifyContent: "space-between", // Пробіл між TextInput і кнопкою
-    alignItems: "center", // Вирівнює по вертикалі
-    marginBottom: 20, // Відступ між полем і Picker
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
   },
   input: {
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
-    flex: 1, // Текстове поле заповнює доступну ширину
+    flex: 1,
     paddingLeft: 8,
   },
   picker: {
     height: 50,
-    width: "100%", // Робить Picker максимально широким
-    marginBottom: 20, // Відступ між списком і кнопкою
+    width: "100%",
+    marginBottom: 20,
   },
 });

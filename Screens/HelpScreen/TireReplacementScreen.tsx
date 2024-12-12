@@ -8,7 +8,7 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // Оновлений імпорт
+import { Picker } from "@react-native-picker/picker";
 
 export default function TireReplacementScreen({ navigation }: any) {
   const [tireType, setTireType] = useState<string>("зимова");
@@ -32,7 +32,7 @@ export default function TireReplacementScreen({ navigation }: any) {
           text: "Так",
           onPress: () => {
             console.log(`Тип шини: ${tireType}, Розмірність: ${tireSize}`);
-            navigation.navigate("MapScreen"); // Перехід на карту після підтвердження
+            navigation.navigate("MapScreen");
           },
         },
       ]
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     width: "100%",
-    marginBottom: 30, // Збільшив відступ між Picker
+    marginBottom: 30,
   },
   picker: {
     height: 50,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "100%",
-    marginBottom: 30, // Збільшив відступ між TextInput
+    marginBottom: 30,
   },
   input: {
     borderWidth: 1,

@@ -11,36 +11,36 @@ type EmergencyScreenNavigationProp = StackNavigationProp<
 >;
 
 export default function EmergencyScreen() {
-  const navigation = useNavigation<EmergencyScreenNavigationProp>(); // Ініціалізація з типами навігації
+  const navigation = useNavigation<EmergencyScreenNavigationProp>();
 
   const emergencyServices = [
     {
       id: 1,
       name: "Пожежна охорона",
       action: "Зателефонувати",
-      icon: "flame-outline" as const, // Вказуємо конкретний тип
-      phoneNumber: "101", // Номер телефону для виклику
+      icon: "flame-outline" as const,
+      phoneNumber: "101",
     },
     {
       id: 2,
       name: "Поліція",
       action: "Зателефонувати",
-      icon: "shield-checkmark-outline" as const, // Вказуємо конкретний тип
-      phoneNumber: "102", // Номер телефону для виклику
+      icon: "shield-checkmark-outline" as const,
+      phoneNumber: "102",
     },
     {
       id: 3,
       name: "Швидка допомога",
       action: "Зателефонувати",
-      icon: "heart-outline" as const, // Вказуємо конкретний тип
-      phoneNumber: "103", // Номер телефону для виклику
+      icon: "heart-outline" as const,
+      phoneNumber: "103",
     },
     {
       id: 4,
       name: "Аварійна служба газу",
       action: "Зателефонувати",
-      icon: "flame-outline" as const, // Вказуємо конкретний тип
-      phoneNumber: "104", // Номер телефону для виклику
+      icon: "flame-outline" as const,
+      phoneNumber: "104",
     },
   ];
 
@@ -58,7 +58,6 @@ export default function EmergencyScreen() {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              // Імітуємо дзвінок (можна додати код для фактичного виклику через телефон)
               alert(`Дзвінок до: ${service.phoneNumber}`);
             }}
           >
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    fontSize: 16, // Зменшений шрифт для тексту
+    fontSize: 16,
     fontWeight: "bold",
   },
   button: {
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 14, // Зменшений шрифт для кнопки
+    fontSize: 14,
     fontWeight: "bold",
   },
 });
