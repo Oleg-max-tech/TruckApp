@@ -49,7 +49,7 @@ export default function App() {
           component={TireReplacementScreen}
           options={{ title: "Заміна шин" }}
         />
-        hnf
+        h
       </Stack.Navigator>
     </NavigationContainer>
   );
