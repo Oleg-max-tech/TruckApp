@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+
 import { RootStackParamList } from "../types";
 
 type MapScreenNavigationProp = StackNavigationProp<
@@ -39,6 +40,26 @@ export default function MapScreen() {
     })();
   }, []);
 
+  const confirmLocation = () => {
+    Alert.alert("Підтвердження локації", "Чи підтверджуєте ви свою локацію?", [
+      {
+        text: "Ні",
+        style: "cancel",
+      },
+      {
+        text: "Так",
+        onPress: () => {
+          Alert.alert("Підтверджено", "Евакуатор прибуде через 10 хвилин.", [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate("Tabs"),
+            },
+          ]);
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       {errorMsg ? (
@@ -64,10 +85,9 @@ export default function MapScreen() {
       ) : (
         <Text>Завантаження локації...</Text>
       )}
-      <Button
-        title="Повернутися на головну"
-        onPress={() => navigation.navigate("HelpScreen")}
-      />
+      {location && (
+        <Button title="Підтвердити локацію" onPress={confirmLocation} />
+      )}
     </View>
   );
 }

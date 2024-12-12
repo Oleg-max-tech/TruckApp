@@ -16,10 +16,30 @@ export default function TowingRequestScreen() {
   const navigation = useNavigation<TowingRequestScreenNavigationProp>();
 
   const handleConfirm = () => {
+    const weightValue = parseFloat(weight);
+    const lengthValue = parseFloat(length);
+    const widthValue = parseFloat(width);
+
+    // Перевірка на заповненість полів
     if (!weight || !length || !width) {
       Alert.alert("Помилка", "Будь ласка, заповніть всі поля.");
       return;
     }
+
+    // Перевірка обмежень
+    if (weightValue > 2790) {
+      Alert.alert("Помилка", "Вага не може перевищувати 2790 кг.");
+      return;
+    }
+    if (lengthValue > 5) {
+      Alert.alert("Помилка", "Довжина не може перевищувати 5 метрів.");
+      return;
+    }
+    if (widthValue > 3.2) {
+      Alert.alert("Помилка", "Ширина не може перевищувати 3.2 метра.");
+      return;
+    }
+
     Alert.alert(
       "Підтвердження",
       "Ваш запит прийнято. Евакуатор під'їде найближчим часом.",
@@ -39,6 +59,7 @@ export default function TowingRequestScreen() {
         style={styles.input}
         placeholder="Вага (кг)"
         keyboardType="numeric"
+        maxLength={4}
         value={weight}
         onChangeText={setWeight}
       />
@@ -46,6 +67,7 @@ export default function TowingRequestScreen() {
         style={styles.input}
         placeholder="Довжина (м)"
         keyboardType="numeric"
+        maxLength={2}
         value={length}
         onChangeText={setLength}
       />
@@ -53,6 +75,7 @@ export default function TowingRequestScreen() {
         style={styles.input}
         placeholder="Ширина (м)"
         keyboardType="numeric"
+        maxLength={2}
         value={width}
         onChangeText={setWidth}
       />
