@@ -82,7 +82,7 @@ export default function TowingRequestScreen() {
         style={styles.input}
         placeholder="Ширина (м)"
         keyboardType="numeric"
-        maxLength={2}
+        maxLength={3}
         value={width}
         onChangeText={setWidth}
       />
