@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  Button,
-  Alert,
-  ScrollView,
   TextInput,
+  Alert,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../types";
 
-export default function TireReplacementScreen({ navigation }: any) {
+type TowingRequestScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "TowingRequestScreen"
+>;
+
+export default function TireReplacementScreen() {
   const [tireType, setTireType] = useState<string>("зимова");
   const [tireSize, setTireSize] = useState<string>("");
+  const navigation = useNavigation<TowingRequestScreenNavigationProp>();
 
   const handleSubmit = () => {
     if (!tireSize) {
@@ -45,73 +53,109 @@ export default function TireReplacementScreen({ navigation }: any) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
+      <Image
+        source={{ uri: "https://example.com/tire-image.jpg" }}
+        style={styles.image}
+        resizeMode="contain"
+      />
       <Text style={styles.title}>Виберіть тип шини та розмірність</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Розмірність шин"
-          keyboardType="numeric"
-          maxLength={2}
-          value={tireSize}
-          onChangeText={setTireSize}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Підтвердити" onPress={handleSubmit} />
-      </View>
-
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={tireType}
-          style={styles.picker}
-          onValueChange={(itemValue) => setTireType(itemValue)}
+      <TextInput
+        style={styles.input}
+        placeholder="Розмірність шин"
+        keyboardType="numeric"
+        maxLength={2}
+        value={tireSize}
+        onChangeText={setTireSize}
+      />
+      <View style={styles.tireTypeContainer}>
+        <TouchableOpacity
+          style={[
+            styles.tireTypeButton,
+            tireType === "зимова" && styles.tireTypeButtonSelected,
+          ]}
+          onPress={() => setTireType("зимова")}
         >
-          <Picker.Item label="Зимова" value="зимова" />
-          <Picker.Item label="Літня" value="літня" />
-        </Picker>
+          <Text style={styles.tireTypeButtonText}>Зимова</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tireTypeButton,
+            tireType === "літня" && styles.tireTypeButtonSelected,
+          ]}
+          onPress={() => setTireType("літня")}
+        >
+          <Text style={styles.tireTypeButtonText}>Літня</Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Підтвердити</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: "#f5f5f5",
+    padding: 20,
+    backgroundColor: "#eaf4fc",
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    color: "#333",
     textAlign: "center",
-  },
-  pickerContainer: {
-    width: "100%",
-    marginBottom: 30,
-  },
-  picker: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    backgroundColor: "#fff",
-  },
-  inputContainer: {
-    width: "100%",
     marginBottom: 30,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 16,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 20,
     backgroundColor: "#fff",
+    fontSize: 16,
   },
-  buttonContainer: {
-    marginTop: 40,
-    width: "100%",
+  tireTypeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 20,
+  },
+  tireTypeButton: {
+    padding: 15,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 12,
+    backgroundColor: "#f5f5f5",
+  },
+  tireTypeButtonSelected: {
+    backgroundColor: "#007bff",
+    borderColor: "#0056b3",
+  },
+  tireTypeButtonText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    paddingVertical: 15,
+    borderRadius: 12,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
