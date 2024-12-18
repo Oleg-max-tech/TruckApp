@@ -1,52 +1,64 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
-  TextInput,
   Alert,
   TouchableOpacity,
   StyleSheet,
   Image,
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 type TowingRequestScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "TowingRequestScreen"
 >;
 
+type FormData = {
+  weight: number;
+  length: number;
+  width: number;
+};
+
+const schema = Yup.object().shape({
+  weight: Yup.number()
+    .typeError("Введіть числове значення")
+    .required("Вага обов'язкова")
+    .max(2790, "Вага не може перевищувати 2790 кг"),
+  length: Yup.number()
+    .typeError("Введіть числове значення")
+    .required("Довжина обов'язкова")
+    .max(5, "Довжина не може перевищувати 5 метрів"),
+  width: Yup.number()
+    .typeError("Введіть числове значення")
+    .required("Ширина обов'язкова")
+    .max(3.2, "Ширина не може перевищувати 3.2 метра"),
+});
+
 export default function TowingRequestScreen() {
-  const [weight, setWeight] = useState<string>("");
-  const [length, setLength] = useState<string>("");
-  const [width, setWidth] = useState<string>("");
   const navigation = useNavigation<TowingRequestScreenNavigationProp>();
 
-  const handleConfirm = () => {
-    const weightValue = parseFloat(weight);
-    const lengthValue = parseFloat(length);
-    const widthValue = parseFloat(width);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      weight: undefined,
+      length: undefined,
+      width: undefined,
+    },
+  });
 
-    if (!weight || !length || !width) {
-      Alert.alert("Помилка", "Будь ласка, заповніть всі поля.");
-      return;
-    }
-
-    if (weightValue > 2790) {
-      Alert.alert("Помилка", "Вага не може перевищувати 2790 кг.");
-      return;
-    }
-    if (lengthValue > 5) {
-      Alert.alert("Помилка", "Довжина не може перевищувати 5 метрів.");
-      return;
-    }
-    if (widthValue > 3.2) {
-      Alert.alert("Помилка", "Ширина не може перевищувати 3.2 метра.");
-      return;
-    }
-
-    Alert.alert("Підтвердження", "Ваш запит прийнято. ", [
+  const handleConfirm = (data: FormData) => {
+    Alert.alert("Підтвердження", "Ваш запит прийнято.", [
       {
         text: "OK",
         onPress: () => navigation.navigate("MapScreen"),
@@ -62,31 +74,71 @@ export default function TowingRequestScreen() {
         resizeMode="contain"
       />
       <Text style={styles.title}>Заповніть параметри для евакуатора:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Вага (кг)"
-        keyboardType="numeric"
-        maxLength={4}
-        value={weight}
-        onChangeText={setWeight}
+
+      <Controller
+        control={control}
+        name="weight"
+        render={({ field: { onChange, value } }) => (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Вага (кг)"
+              keyboardType="numeric"
+              maxLength={4}
+              onChangeText={(text) => onChange(parseFloat(text) || undefined)}
+              value={value ? value.toString() : ""}
+            />
+            {errors.weight && (
+              <Text style={styles.error}>{errors.weight.message}</Text>
+            )}
+          </>
+        )}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Довжина (м)"
-        keyboardType="numeric"
-        maxLength={2}
-        value={length}
-        onChangeText={setLength}
+
+      <Controller
+        control={control}
+        name="length"
+        render={({ field: { onChange, value } }) => (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Довжина (м)"
+              keyboardType="numeric"
+              maxLength={2}
+              onChangeText={(text) => onChange(parseFloat(text) || undefined)}
+              value={value ? value.toString() : ""}
+            />
+            {errors.length && (
+              <Text style={styles.error}>{errors.length.message}</Text>
+            )}
+          </>
+        )}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Ширина (м)"
-        keyboardType="numeric"
-        maxLength={3}
-        value={width}
-        onChangeText={setWidth}
+
+      <Controller
+        control={control}
+        name="width"
+        render={({ field: { onChange, value } }) => (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Ширина (м)"
+              keyboardType="numeric"
+              maxLength={3}
+              onChangeText={(text) => onChange(parseFloat(text) || undefined)}
+              value={value ? value.toString() : ""}
+            />
+            {errors.width && (
+              <Text style={styles.error}>{errors.width.message}</Text>
+            )}
+          </>
+        )}
       />
-      <TouchableOpacity style={styles.button} onPress={handleConfirm}>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSubmit(handleConfirm)}
+      >
         <Text style={styles.buttonText}>Підтвердити</Text>
       </TouchableOpacity>
     </View>
@@ -98,7 +150,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#eaf4fc",
-    // justifyContent: "center",
   },
   image: {
     width: "100%",
@@ -117,7 +168,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 12,
     padding: 12,
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: "#fff",
     fontSize: 16,
   },
@@ -136,5 +187,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
+    fontSize: 14,
   },
 });

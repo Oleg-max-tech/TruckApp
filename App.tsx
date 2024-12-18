@@ -1,14 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SosScreen from "./Screens/SosScreen";
+import SosScreen from "./Screens/SosScreen/SosScreen";
 import TabsScreen from "./Screens/TabsScreen";
 import TowingRequestScreen from "./Screens/HelpScreen/TowingRequestScreen";
 import MapScreen from "./Screens/MapScreen";
 import HelpScreen from "./Screens/HelpScreen/HelpScreen";
 import FuelRequestScreen from "./Screens/HelpScreen/FuelRequestScreen";
 import TireReplacementScreen from "./Screens/HelpScreen/TireReplacementScreen";
+import { RootStackParamList } from "./types";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (

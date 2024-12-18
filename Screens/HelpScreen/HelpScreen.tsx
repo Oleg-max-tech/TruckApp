@@ -36,7 +36,7 @@ export default function HelpScreen() {
               }
             }}
           >
-            <Text style={styles.buttonText}>{service.action}</Text>
+            <Text style={styles.buttonText}>{service.actionButtonLabel}</Text>
           </TouchableOpacity>
         </View>
       ))}

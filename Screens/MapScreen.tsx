@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useUserLocation } from "../hooks/userLocation";
 
 import { RootStackParamList } from "../types";
 
@@ -14,31 +14,7 @@ type MapScreenNavigationProp = StackNavigationProp<
 
 export default function MapScreen() {
   const navigation = useNavigation<MapScreenNavigationProp>();
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Доступ до геолокації відхилено!");
-        return;
-      }
-
-      try {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
-      } catch (error) {
-        setErrorMsg("Не вдалося отримати геолокацію.");
-      }
-    })();
-  }, []);
+  const { location, errorMsg } = useUserLocation();
 
   const confirmLocation = () => {
     Alert.alert("Підтвердження локації", "Чи підтверджуєте ви свою локацію?", [
@@ -60,11 +36,12 @@ export default function MapScreen() {
     ]);
   };
 
-  return (
-    <View style={styles.container}>
-      {errorMsg ? (
-        <Text>{errorMsg}</Text>
-      ) : location ? (
+  const MainContent = useCallback(() => {
+    if (errorMsg) {
+      return <Text>{errorMsg}</Text>;
+    }
+    if (location) {
+      return (
         <MapView
           style={styles.map}
           initialRegion={{
@@ -82,12 +59,19 @@ export default function MapScreen() {
             title="Ваша локація"
           />
         </MapView>
-      ) : (
-        <Text>Завантаження локації...</Text>
-      )}
-      {location && (
+      );
+    } else {
+      return <Text>Завантаження локації...</Text>;
+    }
+  }, [errorMsg, location]);
+
+  return (
+    <View style={styles.container}>
+      <MainContent />
+
+      <View style={styles.buttonContainer}>
         <Button title="Підтвердити локацію" onPress={confirmLocation} />
-      )}
+      </View>
     </View>
   );
 }
@@ -95,8 +79,17 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "flex-end",
   },
   map: {
     flex: 1,
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#f5f5f5",
+    paddingBottom: 20,
   },
 });

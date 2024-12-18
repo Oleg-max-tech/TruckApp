@@ -21,7 +21,7 @@ export default function EmergencyScreen() {
               alert(`Дзвінок до: ${service.phoneNumber}`);
             }}
           >
-            <Text style={styles.buttonText}>{service.action}</Text>
+            <Text style={styles.buttonText}>{service.actionButtonLabel}</Text>
           </TouchableOpacity>
         </View>
       ))}

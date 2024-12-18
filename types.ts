@@ -14,6 +14,6 @@ export type RootStackParamList = {
 export type Service = {
   id: number;
   name: string;
-  action: string;
+  actionButtonLabel: string;
   icon: React.ComponentProps<typeof Ionicons>["name"];
 };

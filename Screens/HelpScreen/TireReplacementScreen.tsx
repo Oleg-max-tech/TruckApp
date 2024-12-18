@@ -11,27 +11,41 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 type TowingRequestScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "TowingRequestScreen"
 >;
 
+type FormData = {
+  tireSize: number;
+};
+
+const schema = Yup.object().shape({
+  tireSize: Yup.number()
+    .typeError("Введіть числове значення!!!")
+    .required("Розмір покришки обов'язковий!!!")
+    .max(18, "Розмір покришки не може перевищувати R18!!!")
+    .min(13, "Розмір покришки не може бути меншим ніж R13!!!"),
+});
+
 export default function TireReplacementScreen() {
   const [tireType, setTireType] = useState<string>("зимова");
-  const [tireSize, setTireSize] = useState<string>("");
   const navigation = useNavigation<TowingRequestScreenNavigationProp>();
 
-  const handleSubmit = () => {
-    if (!tireSize) {
-      Alert.alert("Помилка", "Будь ласка, вкажіть розмірність шин.");
-      return;
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
 
-    if (parseInt(tireSize) > 19) {
-      Alert.alert("Помилка!", "Максимальна розмірність шин R18");
-      return;
-    }
+  const onSubmit = async (data: FormData) => {
+    const { tireSize } = data;
 
     Alert.alert(
       "Підтвердження",
@@ -60,14 +74,27 @@ export default function TireReplacementScreen() {
         resizeMode="contain"
       />
       <Text style={styles.title}>Виберіть тип шини та розмірність</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Розмірність шин"
-        keyboardType="numeric"
-        maxLength={2}
-        value={tireSize}
-        onChangeText={setTireSize}
+
+      <Controller
+        control={control}
+        name="tireSize"
+        render={({ field: { onChange, value } }) => (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Розмірність шин"
+              keyboardType="numeric"
+              maxLength={2}
+              value={value ? value.toString() : ""}
+              onChangeText={(text) => onChange(parseInt(text) || 0)}
+            />
+            {errors.tireSize && (
+              <Text style={styles.error}>{errors.tireSize.message}</Text>
+            )}
+          </>
+        )}
       />
+
       <View style={styles.tireTypeContainer}>
         <TouchableOpacity
           style={[
@@ -88,7 +115,8 @@ export default function TireReplacementScreen() {
           <Text style={styles.tireTypeButtonText}>Літня</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Підтвердити</Text>
       </TouchableOpacity>
     </View>
@@ -157,5 +185,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
+    fontSize: 14,
   },
 });

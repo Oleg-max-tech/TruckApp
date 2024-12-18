@@ -11,27 +11,50 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 type TowingRequestScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "TowingRequestScreen"
 >;
 
+type FormData = {
+  liters: string;
+};
+
+const schema = Yup.object().shape({
+  liters: Yup.string()
+    .matches(/^\d+$/, "Введіть числове значення!!!")
+    .required("Обсяг палива обов'язковий!!!")
+    .test(
+      "is-valid-number",
+      "Кількість палива повинна бути між 10 та 99 літрів!!!",
+      (value) => {
+        const numberValue = Number(value);
+        return numberValue >= 10 && numberValue <= 99;
+      }
+    ),
+});
+
 export default function FuelRequestScreen() {
-  const [liters, setLiters] = useState<string>("");
   const [fuelType, setFuelType] = useState<string>("Бензин");
   const navigation = useNavigation<TowingRequestScreenNavigationProp>();
 
-  const handleSubmit = () => {
-    if (!liters) {
-      Alert.alert("Помилка", "Будь ласка, вкажіть кількість літрів.");
-      return;
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      liters: "",
+    },
+  });
 
-    if (parseInt(liters) > 100) {
-      Alert.alert("Помилка!", "Максимальна кількість пального - 100 літрів.");
-      return;
-    }
+  const onSubmit = (data: FormData) => {
+    const { liters } = data;
 
     Alert.alert(
       "Підтвердження",
@@ -62,14 +85,25 @@ export default function FuelRequestScreen() {
         resizeMode="contain"
       />
       <Text style={styles.title}>Введіть кількість літрів та тип пального</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Кількість літрів"
-        keyboardType="numeric"
-        maxLength={3}
-        value={liters}
-        onChangeText={setLiters}
+
+      <Controller
+        control={control}
+        name="liters"
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={[styles.input, errors.liters && { borderColor: "red" }]}
+            placeholder="Кількість літрів"
+            keyboardType="numeric"
+            maxLength={3}
+            value={value ? value.toString() : ""}
+            onChangeText={onChange}
+          />
+        )}
       />
+      {errors.liters && (
+        <Text style={styles.errorText}>{errors.liters.message}</Text>
+      )}
+
       <View style={styles.fuelTypeContainer}>
         <TouchableOpacity
           style={[
@@ -99,7 +133,8 @@ export default function FuelRequestScreen() {
           <Text style={styles.fuelTypeButtonText}>Газ</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Підтвердити</Text>
       </TouchableOpacity>
     </View>
@@ -132,6 +167,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "#fff",
     fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 20,
+    textAlign: "center",
   },
   fuelTypeContainer: {
     flexDirection: "row",
