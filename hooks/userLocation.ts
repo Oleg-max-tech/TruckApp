@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import * as Location from "expo-location";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
 
 export function useUserLocation() {
   const [location, setLocation] = useState<{
@@ -7,12 +10,19 @@ export function useUserLocation() {
     longitude: number;
   } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const navigation =
+    useNavigation<StackNavigationProp<RootStackParamList, "HelpScreen">>();
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let { status, canAskAgain } =
+        await Location.requestForegroundPermissionsAsync();
+
       if (status !== "granted") {
-        setErrorMsg("Доступ до геолокації відхилено!");
+        setErrorMsg("Надайте доступ до геолокації для продовження роботи.");
+        setTimeout(() => {
+          navigation.navigate("HelpScreen");
+        });
         return;
       }
 

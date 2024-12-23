@@ -38,7 +38,9 @@ export default function App() {
         <Stack.Screen
           name="HelpScreen"
           component={HelpScreen}
-          options={{ title: "Допомога" }}
+          options={{
+            title: "Допомога",
+          }}
         />
         <Stack.Screen
           name="FuelRequestScreen"

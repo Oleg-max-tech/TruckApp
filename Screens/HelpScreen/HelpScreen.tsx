@@ -1,18 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types";
 import { services } from "../../service";
+import { useUserLocation } from "../../hooks/userLocation"; // Імпортуємо хук
 
 type HelpScreenNavigationProp = StackNavigationProp<RootStackParamList, "SOS">;
 
 export default function HelpScreen() {
+  const { location, errorMsg } = useUserLocation();
   const navigation = useNavigation<HelpScreenNavigationProp>();
 
   return (
     <View style={styles.container}>
+      {errorMsg && !location && <Text style={styles.errorMsg}>{errorMsg}</Text>}
       {services.map((service) => (
         <View key={service.id} style={styles.card}>
           <Ionicons
@@ -25,14 +34,18 @@ export default function HelpScreen() {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (service.id === 1) {
-                navigation.navigate("TowingRequestScreen");
-              }
-              if (service.id === 2) {
-                navigation.navigate("FuelRequestScreen");
-              }
-              if (service.id === 3) {
-                navigation.navigate("TireReplacementScreen");
+              switch (service.id) {
+                case 1:
+                  navigation.navigate("TowingRequestScreen");
+                  break;
+                case 2:
+                  navigation.navigate("FuelRequestScreen");
+                  break;
+                case 3:
+                  navigation.navigate("TireReplacementScreen");
+                  break;
+                default:
+                  break;
               }
             }}
           >
@@ -40,6 +53,14 @@ export default function HelpScreen() {
           </TouchableOpacity>
         </View>
       ))}
+      <TouchableOpacity
+        style={styles.settingsButton}
+        onPress={() => {
+          Linking.openSettings();
+        }}
+      >
+        <Text style={styles.settingsButtonText}>Відкрити налаштування</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -49,6 +70,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
     padding: 16,
+  },
+  errorMsg: {
+    color: "#ff4d4d",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
   },
   card: {
     flexDirection: "row",
@@ -79,6 +107,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  settingsButton: {
+    marginTop: 20,
+    backgroundColor: "#ff4d4d",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignSelf: "center",
+  },
+  settingsButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",

@@ -23,8 +23,16 @@ export const useSOSAnimation = () => {
   }, []);
 
   const startAnimation = () => {
-    progress.value = withRepeat(withSpring(0.5), 3, true);
-    scale.value = withRepeat(withSpring(1), 3, true);
+    progress.value = withRepeat(
+      withSpring(0.5, { damping: 7, stiffness: 50 }),
+      2,
+      true
+    );
+    scale.value = withRepeat(
+      withSpring(1, { damping: 7, stiffness: 50 }),
+      3,
+      true
+    );
   };
 
   return { reanimatedStyle, startAnimation };

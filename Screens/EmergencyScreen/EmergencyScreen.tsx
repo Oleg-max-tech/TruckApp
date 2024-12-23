@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { emergencyServices } from "../../service";
 
@@ -18,7 +18,20 @@ export default function EmergencyScreen() {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              alert(`Дзвінок до: ${service.phoneNumber}`);
+              Alert.alert(
+                "Виклик екстренної служби",
+                `Дзвінок до: ${service.phoneNumber}`,
+                [
+                  {
+                    text: "Дзвінок",
+                    style: "default",
+                  },
+                  {
+                    text: "Відмінити",
+                    style: "destructive",
+                  },
+                ]
+              );
             }}
           >
             <Text style={styles.buttonText}>{service.actionButtonLabel}</Text>
