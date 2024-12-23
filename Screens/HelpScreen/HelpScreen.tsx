@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types";
 import { services } from "../../service";
-import { useUserLocation } from "../../hooks/userLocation"; // Імпортуємо хук
+import { useUserLocation } from "../../hooks/useUserLocation";
 
 type HelpScreenNavigationProp = StackNavigationProp<RootStackParamList, "SOS">;
 

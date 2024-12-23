@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useUserLocation } from "../hooks/userLocation";
+import { useUserLocation } from "../hooks/useUserLocation";
 
 import { RootStackParamList } from "../types";
 
